@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>MediaFiles/click2.wav</file> 
+        <file>MediaFiles/click.wav</file>        
+    </qresource>
+</RCC>

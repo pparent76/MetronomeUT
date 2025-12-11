@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="qml/">
+        <file>Main.qml</file>
+        <file>img/metronom.png</file>
+    </qresource> 
+</RCC>
