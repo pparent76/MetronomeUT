@@ -117,7 +117,7 @@ Item {
                     to: 250
                     value: 100
                     onValueChanged: bpmSlider.value = value
-                    background: Rectangle { color: "white"; radius: 4 }
+                    background: Rectangle { color: theme.palette.normal.background; radius: 4 }
                     font.pixelSize: units.gu(3.5)
                 }
 
