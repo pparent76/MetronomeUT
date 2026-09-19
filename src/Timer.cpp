@@ -7,6 +7,19 @@
 
 using namespace std;
 
+auto applyGain = [](QByteArray &data, float gain)
+{
+    qint16 *samples = reinterpret_cast<qint16*>(data.data());
+    const int sampleCount = data.size() / sizeof(qint16);
+
+    for (int i = 0; i < sampleCount; ++i)
+    {
+        float value = samples[i] * gain;
+        value = qBound(-32768.0f, value, 32767.0f);
+        samples[i] = static_cast<qint16>(value);
+    }
+};
+
 Timer::Timer(QObject *parent)
 {
     m_format.setSampleRate(44100);
@@ -33,7 +46,7 @@ Timer::Timer(QObject *parent)
     
     m_output = new QAudioOutput(m_format);
     m_output->moveToThread(QThread::currentThread());
-    m_output->setVolume(0.6);
+    m_output->setVolume(1);
     
     rebuildCycle();
 }
@@ -65,7 +78,16 @@ void Timer::stressBeat(int n)
 
 void Timer::setVolume(int n)
 {
-    m_output->setVolume(1.0*n/100);
+    if (n<=100)
+    {
+        m_output->setVolume(1.0*n*n/10000);
+        gain=1.0;
+    }
+    else
+    {
+        m_output->setVolume(1.0);
+        gain=1.0*n*n/10000;
+    }
 }
 
 
@@ -89,6 +111,12 @@ void Timer::rebuildCycle()
     QByteArray pcmData = m_clickData.mid(WAV_HEADER_SIZE);
     QByteArray pcmData2 = m_clickData2.mid(WAV_HEADER_SIZE);
     
+    if (gain != 1.0)
+    {
+    applyGain(pcmData, gain);   
+    applyGain(pcmData2, gain);
+    }
+
     int silence = (cycleBytes - pcmData.size())/2*2;
     
     

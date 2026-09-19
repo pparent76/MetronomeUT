@@ -3,6 +3,7 @@ import Lomiri.Components 1.3 as UBC
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
+import QtSystemInfo 5.5
 
 
 Item {
@@ -46,11 +47,21 @@ Item {
                     id: volumeSlider
                     width: itemVolume.width - volumeLabel.width - itemVolume.spacing
                     from: 1
-                    to: 100
-                    value: 60
+                    to: 130
+                    value: 100
                     onValueChanged: {
                         volumeLabel.text = Math.round(value)
                         timer.setVolume(value)
+                        if  (value>101)
+                        {
+                            volumeLabel.color="orange"
+                            filedSlider.color="orange"
+                        }
+                        else
+                        {
+                            volumeLabel.color="white"
+                            filedSlider.color="#00BFFF"
+                        }
                     }
                     background: Rectangle {
                         height: units.gu(0.8)
@@ -62,13 +73,14 @@ Item {
                             width: volumeSlider.visualPosition * parent.width
                             height: parent.height
                             radius: units.gu(0.1)
+                            id: filedSlider
                             color: "#00BFFF"    // piste remplie
                         }
                     }
                 }
                 Text {
                     id: volumeLabel
-                    text: "60"
+                    text: "100"
                     width: units.gu(2.5)
                     color:"white"
                     font.pixelSize: units.gu(2.5)
@@ -233,4 +245,12 @@ Item {
                 font.pixelSize: units.gu(5)
             }
         }  
+        
+        
+        
+        
+    ScreenSaver {
+        id: screenSaver
+        screenSaverEnabled: startButton.visible
+    }
 }

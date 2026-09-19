@@ -69,6 +69,7 @@ private:
 
     int m_bpm = 100;
     int stressbeat = 0 ;
+    float gain=1;
 
     QAudioFormat m_format;
     QAudioOutput *m_output = nullptr;
